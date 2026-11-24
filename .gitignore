@@ -1,0 +1,11 @@
+.DS_Store
+.gradle
+.idea
+.intellijPlatform
+.kotlin
+build
+out
+.gradle-home
+# Signing material never enters the repository.
+*.pem
+*.crt
