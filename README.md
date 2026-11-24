@@ -10,6 +10,9 @@ partition spec, sort order, properties, snapshot history, and its rows.
 The plugin **only reads**: it never creates, changes or deletes anything in
 Polaris or in storage.
 
+[JetBrains Marketplace](https://plugins.jetbrains.com/plugin/36438-catalog-browser-for-apache-polaris)
+
+- [Screenshots](#screenshots)
 - [Install](#install)
 - [Connect to Polaris](#connect-to-polaris)
 - [The catalog tree](#the-catalog-tree)
@@ -18,6 +21,24 @@ Polaris or in storage.
 - [Security](#security)
 - [Troubleshooting](#troubleshooting)
 - [Limits](#limits)
+
+## Screenshots
+
+The catalog tree and a table's schema:
+
+![Catalog tree and table schema](docs/screenshots/1-catalog-tree-and-schema.png)
+
+Snapshot history with branches and tags:
+
+![Snapshot history](docs/screenshots/2-snapshots.png)
+
+Table data in an editor tab, filtered by a partition column:
+
+![Data preview](docs/screenshots/3-data-preview.png)
+
+A connection with S3 keys for the data preview:
+
+![Connection settings](docs/screenshots/4-settings.png)
 
 ## Install
 

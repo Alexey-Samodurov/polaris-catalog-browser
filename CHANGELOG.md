@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Detail tables size their columns to their contents and scroll sideways instead of cutting values short.
+- Detail table headers are bold and do not wrap, as in the data grid.
+
 ## 0.1.0
 
 - Browse Apache Polaris catalogs, nested namespaces, Iceberg tables and views.

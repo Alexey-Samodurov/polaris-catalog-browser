@@ -19,6 +19,7 @@ import java.awt.BorderLayout
 import java.awt.CardLayout
 import javax.swing.JComponent
 import javax.swing.JPanel
+import javax.swing.JTable
 import javax.swing.JTextArea
 import javax.swing.SwingConstants
 import javax.swing.table.DefaultTableModel
@@ -239,6 +240,10 @@ class DetailsPanel : JPanel(CardLayout()) {
         val table = JBTable(model).apply {
             setShowGrid(false)
             emptyText.text = "Nothing"
+            // Columns keep the widths fitted to their contents and scroll sideways when they do
+            // not fit, instead of being squeezed into ellipses.
+            autoResizeMode = JTable.AUTO_RESIZE_OFF
+            tableHeader.defaultRenderer = BoldHeaderRenderer(tableHeader.defaultRenderer)
         }
         table.rowSorter = javax.swing.table.TableRowSorter(model).apply {
             // A column whose cells are all numbers sorts as numbers (1, 2, 10), not as text.
@@ -251,10 +256,25 @@ class DetailsPanel : JPanel(CardLayout()) {
                 }
             }
         }
+        fitColumns(table)
         val panel = JPanel(BorderLayout())
         caption?.let { panel.add(JBLabel(it).apply { border = JBUI.Borders.empty(4, 6) }, BorderLayout.NORTH) }
-        panel.add(JBScrollPane(table), BorderLayout.CENTER)
+        panel.add(JBScrollPane(table).apply { setColumnHeaderView(table.tableHeader) }, BorderLayout.CENTER)
         return panel
+    }
+
+    /** Each column as wide as its header or its widest cell among the first rows, up to a cap. */
+    private fun fitColumns(table: JTable) {
+        val metrics = table.getFontMetrics(table.font)
+        val bold = table.getFontMetrics(table.font.deriveFont(java.awt.Font.BOLD))
+        val rows = minOf(table.rowCount, FIT_SAMPLE_ROWS)
+        for (c in 0 until table.columnCount) {
+            var width = bold.stringWidth(table.getColumnName(c))
+            for (r in 0 until rows) {
+                width = maxOf(width, metrics.stringWidth(table.getValueAt(r, c)?.toString().orEmpty()))
+            }
+            table.columnModel.getColumn(c).preferredWidth = (width + JBUI.scale(20)).coerceAtMost(JBUI.scale(FIT_MAX_WIDTH))
+        }
     }
 
     private fun text(value: String): JComponent = JBScrollPane(
@@ -268,8 +288,29 @@ class DetailsPanel : JPanel(CardLayout()) {
 
     private fun time(ms: Long?): String = Formats.time(ms)
 
+    /** Column names in bold and left-aligned, as in the data grid. */
+    private class BoldHeaderRenderer(private val base: javax.swing.table.TableCellRenderer) : javax.swing.table.TableCellRenderer {
+        override fun getTableCellRendererComponent(
+            table: JTable,
+            value: Any?,
+            isSelected: Boolean,
+            hasFocus: Boolean,
+            row: Int,
+            column: Int,
+        ): java.awt.Component {
+            val c = base.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column)
+            if (c is javax.swing.JLabel) {
+                c.text = "<html><nobr><b>${com.intellij.openapi.util.text.StringUtil.escapeXmlEntities(value?.toString().orEmpty())}</b></nobr></html>"
+                c.horizontalAlignment = SwingConstants.LEFT
+            }
+            return c
+        }
+    }
+
     private companion object {
         const val CARD_MESSAGE = "message"
         const val CARD_TABS = "tabs"
+        const val FIT_SAMPLE_ROWS = 200
+        const val FIT_MAX_WIDTH = 520
     }
 }
