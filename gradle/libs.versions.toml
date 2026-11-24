@@ -1,0 +1,52 @@
+[versions]
+kotlin = "2.4.21"
+# The IDE ships kotlinx.coroutines and kotlinx.serialization; the plugin compiles
+# against versions no newer than the ones bundled in its lowest supported build
+# and never bundles its own copy.
+coroutines = "1.10.2"
+serialization = "1.9.0"
+junit = "6.1.3"
+testcontainers = "2.0.5"
+# The Iceberg SDK the preview reads with, and the AWS SDK and Hadoop versions
+# Iceberg 1.12.0 is built with.
+iceberg = "1.12.0"
+awssdk = "2.54.17"
+hadoop = "3.4.3"
+slf4j = "2.0.18"
+
+# The IDE the plugin compiles against (sinceBuild), and the latest update of
+# each supported major release, checked by verifyPlugin.
+pycharmCompile = "2026.2.5"
+pycharmLatestPrevious = "2026.2.5"
+pycharmLatestCurrent = "2026.3.0.1"
+
+[libraries]
+coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "coroutines" }
+serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "serialization" }
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+testcontainers = { module = "org.testcontainers:testcontainers", version.ref = "testcontainers" }
+junit4 = { module = "junit:junit", version = "4.13.2" }
+iceberg-core = { module = "org.apache.iceberg:iceberg-core", version.ref = "iceberg" }
+iceberg-data = { module = "org.apache.iceberg:iceberg-data", version.ref = "iceberg" }
+iceberg-parquet = { module = "org.apache.iceberg:iceberg-parquet", version.ref = "iceberg" }
+iceberg-aws = { module = "org.apache.iceberg:iceberg-aws", version.ref = "iceberg" }
+iceberg-orc = { module = "org.apache.iceberg:iceberg-orc", version.ref = "iceberg" }
+awssdk-bom = { module = "software.amazon.awssdk:bom", version.ref = "awssdk" }
+awssdk-s3 = { module = "software.amazon.awssdk:s3" }
+awssdk-kms = { module = "software.amazon.awssdk:kms" }
+awssdk-sts = { module = "software.amazon.awssdk:sts" }
+awssdk-urlconnection = { module = "software.amazon.awssdk:url-connection-client" }
+hadoop-common = { module = "org.apache.hadoop:hadoop-common", version.ref = "hadoop" }
+hadoop-mapreduce-core = { module = "org.apache.hadoop:hadoop-mapreduce-client-core", version.ref = "hadoop" }
+hadoop-shaded-guava = { module = "org.apache.hadoop.thirdparty:hadoop-shaded-guava", version = "1.5.0" }
+woodstox = { module = "com.fasterxml.woodstox:woodstox-core", version = "7.1.1" }
+stax2 = { module = "org.codehaus.woodstox:stax2-api", version = "4.2.2" }
+commons-collections = { module = "org.apache.commons:commons-collections4", version = "4.5.0" }
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+slf4j-simple = { module = "org.slf4j:slf4j-simple", version.ref = "slf4j" }
+
+[plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }

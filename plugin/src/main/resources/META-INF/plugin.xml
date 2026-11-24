@@ -1,0 +1,40 @@
+<idea-plugin>
+    <!-- id, name, version, vendor and change notes are set by the build from gradle.properties. -->
+    <id>io.github.alexey_samodurov.polaris</id>
+    <name>Catalog Browser for Apache Polaris</name>
+    <vendor url="https://github.com/Alexey-Samodurov">Aleksei Samodurov</vendor>
+    <description><![CDATA[
+        <p>Browse <a href="https://polaris.apache.org/">Apache Polaris</a> catalogs from the IDE:
+        catalogs, nested namespaces, Iceberg tables and views.</p>
+        <ul>
+          <li>Table details: schema with field ids and defaults, partition spec, sort order,
+              properties (secrets masked), snapshot history with branches and tags.</li>
+          <li>Table data: rows read with the Iceberg Java SDK, so deletion vectors and delete
+              files are applied; at any snapshot, branch or tag; with column choice and
+              partition filters; up to 1000 rows, in a tab or an editor tab.</li>
+          <li>Views: schema and SQL per dialect.</li>
+          <li>Read-only: nothing is ever written to Polaris or to storage.</li>
+          <li>Credentials stay in the IDE's password safe; the IDE's certificates and proxy
+              are used.</li>
+        </ul>
+        <p>Connect in <b>Settings | Tools | Polaris Catalog Browser</b>, then open the
+        <b>Polaris</b> tool window.</p>
+        <p>Apache Polaris and Apache Iceberg are trademarks of the Apache Software Foundation.
+        This plugin is not affiliated with or endorsed by the ASF.</p>
+    ]]></description>
+
+    <depends>com.intellij.modules.platform</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Polaris"
+                    anchor="right"
+                    icon="/icons/polaris.svg"
+                    factoryClass="io.github.alexey_samodurov.polaris.ui.PolarisToolWindowFactory"/>
+        <fileEditorProvider implementation="io.github.alexey_samodurov.polaris.ui.TablePreviewEditorProvider"/>
+        <fileIconProvider implementation="io.github.alexey_samodurov.polaris.ui.TablePreviewIconProvider"/>
+        <applicationConfigurable parentId="tools"
+                                 id="io.github.alexey_samodurov.polaris.settings"
+                                 displayName="Polaris Catalog Browser"
+                                 instance="io.github.alexey_samodurov.polaris.settings.PolarisConfigurable"/>
+    </extensions>
+</idea-plugin>
